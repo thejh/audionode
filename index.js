@@ -79,6 +79,7 @@ function AudioLeecher(options) {
   function shutdown() {
     self.audioReader.removeListener('data', ondata)
     self.audioReader.removeListener('end', shutdown)
+    self.socket.destroy()
   }
   this.audioReader.on('data', ondata)
   this.audioReader.on('end', shutdown)
