@@ -50,7 +50,7 @@ var server = net.createServer(function(c) {
         })
         audioReader.parse(firstChunk)
       } else if (clientType === 'listen') {
-        if (!rooms.hasOwnProperty(roomName)) {
+        if (!rooms.hasOwnProperty(roomName) || !rooms[roomName].ready) {
           c.write('room name is unused\n')
           c.end()
           break
