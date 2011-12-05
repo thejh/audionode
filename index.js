@@ -71,6 +71,10 @@ function AudioLeecher(options) {
 
   function ondata(chunk) {
     self.socket.write(chunk)
+    if (self.socket.bufferSize > 100000) {
+      console.log('kicked a client with 100kB sendq')
+      self.destroy()
+    }
   }
   function shutdown() {
     self.audioReader.removeListener('data', ondata)
