@@ -8,7 +8,7 @@ Creating a room (the room will vanish and all clients will disconnect when you d
 
 Listening to a room:
 
-    > nc <server> 1289
+    > nc <server> 1289 | aplay
     listen <roomname>
 
 Important: Room names can't contain spaces!
