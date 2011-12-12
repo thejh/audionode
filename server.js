@@ -2,6 +2,7 @@
 var audionode = require('./')
   , AudioReader = audionode.AudioReader
   , AudioLeecher = audionode.AudioLeecher
+  , AudioMixer = audionode.AudioMixer
   , net = require('net')
   , http = require('http')
   , url = require('url')
@@ -60,10 +61,24 @@ var server = net.createServer(function(c) {
           break
         }
         var audioReader = new AudioReader({inStream: c})
-        rooms[roomName] = audioReader
-        audioReader.on('end', function() {
+        var audioMixer = new AudioMixer(audioReader)
+        rooms[roomName] = audioMixer
+        audioMixer.on('end', function() {
           delete rooms[roomName]
         })
+        audioReader.on('error', function() {
+          c.destroy()
+        })
+        audioReader.parse(firstChunk)
+      } else if (clientType === 'join') {
+        if (!rooms.hasOwnProperty(roomName) || !rooms[roomName].ready) {
+          c.write('room name is unused\n')
+          c.end()
+          break
+        }
+        var audioReader = new AudioReader({inStream: c})
+        var audioMixer = rooms[roomName]
+        audioMixer.addReader(audioReader)
         audioReader.on('error', function() {
           c.destroy()
         })
