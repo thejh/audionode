@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/thejh/audionode.png)](http://travis-ci.org/thejh/audionode)
 This is a 8-bit mono WAV audio streaming server. Supports multiple rooms. Starting the deamon:
 
     > ./server.js
